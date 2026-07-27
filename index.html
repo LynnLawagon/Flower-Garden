@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flower Garden Builder</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<h1>🌸 Flower Garden Builder 🌸</h1>
+
+<div class="container">
+
+<div class="controls">
+
+<h2>Add Flowers</h2>
+
+<button onclick="addFlower('🌹')">Rose</button>
+<button onclick="addFlower('🌷')">Tulip</button>
+<button onclick="addFlower('🌻')">Sunflower</button>
+<button onclick="addFlower('🌼')">Daisy</button>
+<button onclick="addFlower('💜')">Lavender</button>
+
+<h2>Choose Wrapper</h2>
+
+<select id="wrapperSelect">
+<option value="#F8E8EE">Pink</option>
+<option value="#FFF2CC">Cream</option>
+<option value="#D9EAD3">Green</option>
+<option value="#D0E0E3">Blue</option>
+<option value="#EAD1DC">Lavender</option>
+</select>
+
+<button onclick="changeWrapper()">Apply Wrapper</button>
+
+<h2>Letter</h2>
+
+<textarea id="letterInput" placeholder="Write your message..."></textarea>
+
+<button onclick="updateLetter()">Add Letter</button>
+
+<p>Double click a flower to remove it.</p>
+
+</div>
+
+<div class="garden">
+
+<div id="wrapper">
+
+<div id="flowerArea"></div>
+
+<div id="letterCard">
+Your message...
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
