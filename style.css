@@ -194,6 +194,36 @@ textarea::placeholder{color:var(--line-gray);font-family:'Quicksand',sans-serif;
   line-height:1.5;
 }
 
+/* Sidebar Active Flower Panel */
+.active-flower-panel {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-top: 10px;
+  display: none;
+}
+
+.active-flower-panel.visible {
+  display: block;
+}
+
+.control-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 6px 0;
+  gap: 8px;
+}
+
+.control-row input[type=range] {
+  flex: 1;
+  accent-color: var(--ink);
+  cursor: pointer;
+}
+
 /* ---------- STAGE ---------- */
 .stage-outer{
   display:flex;
@@ -240,7 +270,7 @@ textarea::placeholder{color:var(--line-gray);font-family:'Quicksand',sans-serif;
 
 .flower{
   position:absolute;
-  width:92px;
+  width:110px;
   cursor:grab;
   touch-action:none;
   user-select:none;
@@ -250,32 +280,48 @@ textarea::placeholder{color:var(--line-gray);font-family:'Quicksand',sans-serif;
 
 .flower:active{cursor:grabbing;}
 
-.flower .remove-x{
-  position:absolute;
-  top:-6px;right:6px;
-  width:20px;height:20px;
-  border-radius:50%;
-  background:var(--card);
-  border:1.5px solid var(--ink);
-  font-family:'Quicksand',sans-serif;
-  font-size:12px;
-  line-height:17px;
-  text-align:center;
-  cursor:pointer;
-  opacity:0;
-  transition:opacity .15s ease;
+.flower.selected{
+  outline: 2px dashed var(--ink);
+  outline-offset: 4px;
+  z-index: 10 !important;
 }
 
-.flower:hover .remove-x{opacity:1;}
+.flower .remove-x{
+  position:absolute;
+  top:-10px; right:-10px;
+  width:24px; height:24px;
+  border-radius:50%;
+  background:var(--card);
+  border:2px solid var(--ink);
+  font-family:'Quicksand',sans-serif;
+  font-size:12px;
+  font-weight:700;
+  line-height:20px;
+  text-align:center;
+  cursor:pointer;
+  display:none;
+  z-index:11;
+  box-shadow: 2px 2px 0 rgba(35,33,31,0.15);
+}
+
+.flower.selected .remove-x{display:block;}
 
 #bouquetWrapper{
   position:absolute;
-  bottom:20px;
+  bottom:0;
   left:50%;
   transform:translateX(-50%);
   z-index:3;
   pointer-events:none;
-  width:260px;
+  width:300px;
+  display:flex;
+  justify-content:center;
+}
+
+#bouquetWrapper svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
 }
 
 #letterTag{

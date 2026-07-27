@@ -1,10 +1,9 @@
-/* ---------------- flower factory ---------------- */
 const FLOWER_TYPES = {
-  rose:      { label:"Rose",      build: buildRose,      colors:['#E4344F','#C81E3E','#8f1030'] },
-  tulip:     { label:"Tulip",     build: buildTulip,     colors:['#FF6FA5','#E14E86'] },
-  sunflower: { label:"Sunflower", build: buildSunflower, colors:['#FFC93C','#7A4B21'] },
-  daisy:     { label:"Daisy",     build: buildDaisy,     colors:['#FFFDF0','#FFD93C'] },
-  lavender:  { label:"Lavender",  build: buildLavender,  colors:['#8E6FCE','#6E4FAE'] }
+  rose:      { label:"Rose",      build: buildRose },
+  tulip:     { label:"Tulip",     build: buildTulip },
+  sunflower: { label:"Sunflower", build: buildSunflower },
+  daisy:     { label:"Daisy",     build: buildDaisy },
+  lavender:  { label:"Lavender",  build: buildLavender }
 };
 
 const GREEN = '#4C9A6A', GREEN_DARK = '#2F6B45', INK = '#23211f';
@@ -12,7 +11,6 @@ const GREEN = '#4C9A6A', GREEN_DARK = '#2F6B45', INK = '#23211f';
 function stemAndLeaf(){
   return `
     <path d="M70,158 C68,130 72,110 70,92" fill="none" stroke="${INK}" stroke-width="2.5"/>
-    <path d="M70,158 C68,130 72,110 70,92" fill="none" stroke="${GREEN_DARK}" stroke-width="1.4" stroke-dasharray="0" opacity="0.0"/>
     <path d="M70,125 C55,120 44,128 40,142 C56,144 66,136 70,125 Z" fill="${GREEN}" stroke="${INK}" stroke-width="2"/>
   `;
 }
@@ -49,7 +47,6 @@ function buildRose(){
 }
 
 function buildTulip(){
-  const cx=70, cy=60;
   const body = `
     <path d="M42,80 C36,42 52,18 70,24 C88,18 104,42 98,80
               C90,64 80,70 70,58 C60,70 50,64 42,80 Z"
@@ -93,7 +90,6 @@ function buildLavender(){
   return `<svg viewBox="0 0 140 170" xmlns="http://www.w3.org/2000/svg">${stemAndLeaf()}${dots}</svg>`;
 }
 
-/* ---------------- state & DOM setup ---------------- */
 const flowerArea = document.getElementById('flowerArea');
 const wrapperShape = document.getElementById('wrapperShape');
 const emptyNote = document.getElementById('emptyNote');
@@ -116,9 +112,9 @@ const WRAPS = [
 ];
 
 const PASTEL_COLORS = [
+  {name: 'Warm Yellow', color: '#ffea85'},
   {name: 'Blush Pink', color: '#ffd1dc'},
   {name: 'Mint Green', color: '#baffc9'},
-  {name: 'Soft Yellow', color: '#ffffba'},
   {name: 'Baby Blue', color: '#bae1ff'},
   {name: 'Lavender', color: '#e8c5ff'}
 ];
@@ -127,7 +123,6 @@ const wrapRow = document.getElementById('wrapRow');
 const colorRow = document.getElementById('colorRow');
 const stage = document.getElementById('stage');
 
-// Setup Background Patterns
 WRAPS.forEach((w,i)=>{
   const sw = document.createElement('div');
   sw.className = 'wrap-swatch' + (i===0?' active':'');
@@ -141,7 +136,6 @@ WRAPS.forEach((w,i)=>{
   wrapRow.appendChild(sw);
 });
 
-// Setup Pastel Wrapper Colors
 PASTEL_COLORS.forEach((c,i)=>{
   const sw = document.createElement('div');
   sw.className = 'color-swatch' + (i===0?' active':'');
@@ -155,35 +149,89 @@ PASTEL_COLORS.forEach((c,i)=>{
   colorRow.appendChild(sw);
 });
 
-let flowerCount = 0;
+const activePanel = document.getElementById('activeFlowerPanel');
+const sideRot = document.getElementById('sideRot');
+const sideScale = document.getElementById('sideScale');
+let selectedFlower = null;
+
+function deselectAll(except=null){
+  document.querySelectorAll('.flower').forEach(f=>{
+    if(f !== except) f.classList.remove('selected');
+  });
+  if(!except) {
+    selectedFlower = null;
+    activePanel.classList.remove('visible');
+  }
+}
+
+stage.addEventListener('click', (e)=>{
+  if(e.target === stage || e.target === flowerArea || e.target.id === 'bouquetWrapper' || e.target.tagName === 'svg' || e.target.tagName === 'path'){
+    deselectAll();
+  }
+});
+
+function selectFlower(el, rot, scale) {
+  selectedFlower = el;
+  deselectAll(el);
+  el.classList.add('selected');
+  activePanel.classList.add('visible');
+  sideRot.value = rot;
+  sideScale.value = scale;
+}
 
 function addFlower(typeKey){
   const type = FLOWER_TYPES[typeKey];
   const el = document.createElement('div');
   el.className = 'flower';
-  el.innerHTML = type.build();
 
-  const removeBtn = document.createElement('div');
-  removeBtn.className = 'remove-x';
-  removeBtn.textContent = '✕';
-  removeBtn.addEventListener('click', (e)=>{ e.stopPropagation(); el.remove(); checkEmpty(); });
-  el.appendChild(removeBtn);
+  let currentRot = Math.floor(Math.random()*24 - 12);
+  let currentScale = 1;
+
+  el.innerHTML = `
+    <div class="remove-x" title="Delete flower">✕</div>
+    ${type.build()}
+  `;
+
+  function updateTransform(){
+    el.style.transform = `rotate(${currentRot}deg) scale(${currentScale})`;
+  }
+  updateTransform();
+
+  el.querySelector('.remove-x').addEventListener('click', (e)=>{
+    e.stopPropagation();
+    if(selectedFlower === el) deselectAll();
+    el.remove();
+    checkEmpty();
+  });
+
+  el.addEventListener('pointerdown', (e)=>{
+    selectFlower(el, currentRot, currentScale);
+    flowerArea.appendChild(el);
+  });
 
   const areaW = flowerArea.clientWidth, areaH = flowerArea.clientHeight;
-  const x = areaW/2 - 46 + (Math.random()*140-70);
-  const y = areaH*0.42 + (Math.random()*90-45);
-  el.style.left = Math.max(10, Math.min(areaW-100, x)) + 'px';
-  el.style.top = Math.max(10, Math.min(areaH-260, y)) + 'px';
-  const rot = (Math.random()*24-12).toFixed(1);
-  el.style.transform = `rotate(${rot}deg)`;
-  el.dataset.rot = rot;
-
-  el.addEventListener('dblclick', ()=>{ el.remove(); checkEmpty(); });
+  const x = areaW/2 - 55 + (Math.random()*100-50);
+  const y = areaH*0.35 + (Math.random()*60-30);
+  el.style.left = Math.max(10, Math.min(areaW-120, x)) + 'px';
+  el.style.top = Math.max(10, Math.min(areaH-220, y)) + 'px';
 
   flowerArea.appendChild(el);
   makeDraggable(el);
-  flowerCount++;
+  selectFlower(el, currentRot, currentScale);
   checkEmpty();
+
+  sideRot.oninput = function() {
+    if(selectedFlower === el) {
+      currentRot = this.value;
+      updateTransform();
+    }
+  };
+  sideScale.oninput = function() {
+    if(selectedFlower === el) {
+      currentScale = this.value;
+      updateTransform();
+    }
+  };
 }
 
 function checkEmpty(){
@@ -194,6 +242,7 @@ function makeDraggable(el){
   let sx=0, sy=0, ox=0, oy=0, dragging=false;
 
   el.addEventListener('pointerdown', (e)=>{
+    if(e.target.classList.contains('remove-x')) return;
     dragging = true;
     el.setPointerCapture(e.pointerId);
     sx = e.clientX; sy = e.clientY;
@@ -216,7 +265,6 @@ function makeDraggable(el){
   el.addEventListener('pointercancel', stop);
 }
 
-/* ---------------- letter ---------------- */
 const letterInput = document.getElementById('letterInput');
 const signInput = document.getElementById('signInput');
 const letterText = document.getElementById('letterText');
@@ -229,16 +277,16 @@ function syncLetter(){
 letterInput.addEventListener('input', syncLetter);
 signInput.addEventListener('input', syncLetter);
 
-/* ---------------- clear ---------------- */
 document.getElementById('clearBtn').addEventListener('click', ()=>{
   flowerArea.innerHTML = '';
+  deselectAll();
   checkEmpty();
 });
 
-/* ---------------- save as image ---------------- */
 document.getElementById('saveBtn').addEventListener('click', saveBouquet);
 
 async function saveBouquet(){
+  deselectAll();
   const rect = stage.getBoundingClientRect();
   const clone = stage.cloneNode(true);
   clone.style.boxShadow = 'none';
@@ -278,7 +326,7 @@ async function saveBouquet(){
     });
   };
   img.onerror = ()=>{
-    alert("Couldn't save the image in this preview — try downloading the file and opening it directly in a browser.");
+    alert("Couldn't save the image in this preview — try downloading the files and running locally.");
   };
   img.src = url;
 }

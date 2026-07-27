@@ -25,11 +25,23 @@
     <div class="panel-label">🌿 pick your blooms</div>
     <div class="flower-grid" id="flowerGrid"></div>
 
-    <div class="panel-label">🎀 wrapper style</div>
+    <div class="panel-label">🎀 background style</div>
     <div class="wrap-row" id="wrapRow"></div>
 
     <div class="panel-label">🎨 wrapper color</div>
     <div class="color-row" id="colorRow"></div>
+
+    <div class="active-flower-panel" id="activeFlowerPanel">
+      <div class="panel-label" style="font-size:18px; margin:0 0 6px 0; border:none;">✨ adjust selected bloom</div>
+      <div class="control-row">
+        <span>Rotate</span>
+        <input type="range" id="sideRot" min="-180" max="180" value="0">
+      </div>
+      <div class="control-row">
+        <span>Size</span>
+        <input type="range" id="sideScale" min="0.6" max="1.6" step="0.05" value="1">
+      </div>
+    </div>
 
     <div class="panel-label">✉️ your note</div>
     <textarea id="letterInput" placeholder="Write something kind..." maxlength="240"></textarea>
@@ -38,7 +50,7 @@
     <button class="action-btn" id="saveBtn">Save as keepsake</button>
     <button class="action-btn ghost" id="clearBtn">Clear bouquet</button>
 
-    <p class="hint">Drag a flower to arrange it. Tap the ✕ or double-click to remove it.</p>
+    <p class="hint">Click a flower to adjust. Drag to move. Press ✕ to delete.</p>
 
   </div>
 
@@ -49,16 +61,24 @@
 
       <!-- Bouquet Wrapper Graphics Layer -->
       <div id="bouquetWrapper">
-        <svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 300 240" xmlns="http://www.w3.org/2000/svg">
+          <!-- Back wrapper folds -->
+          <path d="M70,40 L150,15 L230,40 L260,110 L40,110 Z" fill="currentColor" stroke="#23211f" stroke-width="2.5" opacity="0.5"/>
+          <path d="M50,25 L150,5 L250,25 L270,120 L30,120 Z" fill="currentColor" stroke="#23211f" stroke-width="2.5" opacity="0.75"/>
+          
           <!-- Main Wrapper Cone -->
-          <path id="wrapperShape" d="M30,10 L210,10 C210,10 230,110 160,165 C135,185 105,185 80,165 C10,110 30,10 30,10 Z" 
-                fill="#ffd1dc" stroke="#23211f" stroke-width="3"/>
+          <path id="wrapperShape" d="M60,60 L240,60 C240,60 270,180 180,215 C160,223 140,223 120,215 C30,180 60,60 60,60 Z" 
+                fill="#ffea85" stroke="#23211f" stroke-width="3"/>
+          <path d="M150,60 L150,215" stroke="#23211f" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.4"/>
+          
           <!-- Ribbon Bow / Tie -->
-          <g transform="translate(120, 140)">
-            <path d="M0,0 C-25,-15 -35,15 0,25 C35,15 25,-15 0,0 Z" fill="#fff" stroke="#23211f" stroke-width="2.5"/>
-            <path d="M0,0 C-25,-25 -50,-10 -35,10 C-20,30 -5,10 0,0 Z" fill="#fff" stroke="#23211f" stroke-width="2.5"/>
-            <path d="M0,0 C25,-25 50,-10 35,10 C20,30 5,10 0,0 Z" fill="#fff" stroke="#23211f" stroke-width="2.5"/>
-            <circle cx="0" cy="0" r="7" fill="#23211f"/>
+          <g transform="translate(150, 190)">
+            <path d="M0,0 C-30,-15 -40,15 0,25 C40,15 30,-15 0,0 Z" fill="#ff76a2" stroke="#23211f" stroke-width="2.5"/>
+            <path d="M0,0 C-30,-25 -65,-10 -45,15 C-25,30 -10,10 0,0 Z" fill="#ff8dae" stroke="#23211f" stroke-width="2.5"/>
+            <path d="M0,0 C30,-25 65,-10 45,15 C25,30 10,10 0,0 Z" fill="#ff8dae" stroke="#23211f" stroke-width="2.5"/>
+            <path d="M-15,20 L-25,55 L-5,45 Z" fill="#ff76a2" stroke="#23211f" stroke-width="2"/>
+            <path d="M15,20 L25,55 L5,45 Z" fill="#ff76a2" stroke="#23211f" stroke-width="2"/>
+            <circle cx="0" cy="0" r="8" fill="#ff5c8d" stroke="#23211f" stroke-width="2.5"/>
           </g>
         </svg>
       </div>
