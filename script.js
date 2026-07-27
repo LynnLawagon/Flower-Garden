@@ -92,6 +92,7 @@ function buildLavender(){
 
 const flowerArea = document.getElementById('flowerArea');
 const wrapperShape = document.getElementById('wrapperShape');
+const bouquetWrapper = document.getElementById('bouquetWrapper');
 const emptyNote = document.getElementById('emptyNote');
 
 const grid = document.getElementById('flowerGrid');
@@ -145,6 +146,7 @@ PASTEL_COLORS.forEach((c,i)=>{
     document.querySelectorAll('.color-swatch').forEach(s=>s.classList.remove('active'));
     sw.classList.add('active');
     wrapperShape.style.fill = c.color;
+    bouquetWrapper.style.color = c.color;
   });
   colorRow.appendChild(sw);
 });

@@ -308,14 +308,16 @@ textarea::placeholder{color:var(--line-gray);font-family:'Quicksand',sans-serif;
 
 #bouquetWrapper{
   position:absolute;
-  bottom:0;
+  bottom:-4px;
   left:50%;
   transform:translateX(-50%);
   z-index:3;
   pointer-events:none;
-  width:300px;
+  width:286px;
   display:flex;
   justify-content:center;
+  padding-bottom:8px;
+  color:#ffea85;
 }
 
 #bouquetWrapper svg {
