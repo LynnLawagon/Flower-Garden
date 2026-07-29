@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bloom & Note — Bouquet Builder</title>
+<title>Bloom &amp; Note — Bouquet Builder</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +15,7 @@
 
 <div class="title">
   <h1>Bloom &amp; Note</h1>
-  <p>build a bouquet, tuck in a little letter</p>
+  <p>cartoon bouquet builder • add a little note</p>
 </div>
 
 <div class="container">
@@ -28,17 +28,17 @@
       <button class="mode-btn active" data-mode="main" type="button">🌟 Main bloom</button>
       <button class="mode-btn" data-mode="side" type="button">🌸 Side bloom</button>
     </div>
-    <p class="mode-hint" id="modeHint">Main blooms are big &amp; centered. Side blooms are smaller and fan out.</p>
+    <p class="mode-hint" id="modeHint">Main blooms are bold and centered. Side blooms tuck in smaller and playful.</p>
 
     <div class="flower-grid" id="flowerGrid"></div>
 
-    <div class="panel-label">🎀 background style</div>
+    <div class="panel-label">🎀 paper wrap style</div>
     <div class="wrap-row" id="wrapRow"></div>
 
-    <div class="panel-label">🎨 outer wrapper color</div>
+    <div class="panel-label">🩷 outer wrapper color</div>
     <div class="color-row" id="colorRow"></div>
 
-    <div class="panel-label">🎨 inner wrapper color</div>
+    <div class="panel-label">🧁 inner wrapper color</div>
     <div class="color-row" id="innerColorRow"></div>
 
     <div class="progress-box" id="progressBox">
@@ -52,19 +52,19 @@
         <div class="progress-track"><div class="progress-fill side" id="sideFill"></div></div>
         <span id="sideCountLabel">0/5</span>
       </div>
-      <p class="progress-hint" id="progressHint">Add at least 5 main and 5 side blooms to unlock arrangement suggestions.</p>
+      <p class="progress-hint" id="progressHint">Add at least 5 main and 5 side blooms to unlock a few bouquet arrangements.</p>
     </div>
 
     <div class="suggest-box" id="suggestBox">
-      <div class="panel-label" style="font-size:18px; margin:0 0 6px 0; border:none;">💡 suggested arrangements</div>
+      <div class="panel-label" style="font-size:18px; margin:0 0 6px 0; border:none;">💡 bouquet ideas</div>
       <button class="arrange-btn" data-style="round">
-        <strong>Classic Round</strong><span>Mains clustered center, sides fan in a ring</span>
+        <strong>Sunny Round</strong><span>Big blooms in a rounded cluster with charming little side petals</span>
       </button>
       <button class="arrange-btn" data-style="fan">
-        <strong>Fan Spread</strong><span>Mains in a wide top row, sides angled outward</span>
+        <strong>Gentle Fan</strong><span>A bouncy spread that feels airy and playful</span>
       </button>
       <button class="arrange-btn" data-style="cascade">
-        <strong>Cascade</strong><span>Tall center bloom, sides trailing down and out</span>
+        <strong>Sweet Cascade</strong><span>One taller bloom leads the way and the rest trail softly</span>
       </button>
     </div>
 
@@ -84,10 +84,10 @@
     <textarea id="letterInput" placeholder="Write something kind..." maxlength="240"></textarea>
     <input class="sign-input" id="signInput" placeholder="Sign it (optional)" maxlength="30">
 
-    <button class="action-btn" id="saveBtn">Save as keepsake</button>
+    <button class="action-btn" id="saveBtn">Download bouquet</button>
     <button class="action-btn ghost" id="clearBtn">Clear bouquet</button>
 
-    <p class="hint">Click a flower to adjust. Drag to move. Press ✕ to delete.</p>
+    <p class="hint">Tap a flower to adjust it. Drag it around, then remove it with ✕.</p>
 
   </div>
 
@@ -96,38 +96,25 @@
       <span class="tape left"></span>
       <span class="tape right"></span>
 
-      <!-- Bouquet paper-wrap layer, flat vector style, two layers -->
       <div id="bouquetWrapper">
-        <svg viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg">
-
-          <!-- soft grounding shadow -->
-          <ellipse cx="150" cy="250" rx="62" ry="8" fill="#23211f" opacity="0.10"/>
-
-          <!-- INNER wrap: sits behind, slightly larger & rotated so it peeks out along the edges -->
+        <svg viewBox="0 0 320 280" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="160" cy="262" rx="72" ry="10" fill="#1f2d23" opacity="0.13"/>
           <path id="wrapperInner"
-                d="M68,52 Q150,30 232,52 L150,256 Z"
-                fill="#fffdf7" stroke="#23211f" stroke-width="2.2" stroke-linejoin="round"
-                transform="rotate(-3 150 150)"/>
-
-          <!-- OUTER wrap: main cone on top -->
+                d="M86 84 C112 46 208 46 234 84 L208 236 C198 252 182 260 160 260 C138 260 122 252 112 236 Z"
+                fill="#fffdf7" stroke="#2f2a28" stroke-width="2.4" stroke-linejoin="round"
+                transform="rotate(-4 160 160)"/>
           <path id="wrapperShape"
-                d="M78,66 Q150,46 222,66 L150,250 Z"
-                fill="#e8c5ff" stroke="#23211f" stroke-width="2.6" stroke-linejoin="round"/>
-
-          <!-- lighter fold highlight on the outer layer, always semi-transparent white -->
-          <path d="M96,80 C90,130 104,186 138,228 L150,250 L118,190 C104,158 98,118 96,80 Z"
-                fill="#ffffff" opacity="0.30"/>
-
-          <!-- center fold crease -->
-          <path d="M150,58 L150,250" stroke="#23211f" stroke-width="1.2" opacity="0.16" fill="none"/>
-
-          <!-- twine bow tied at the neck, over both layers -->
-          <g transform="translate(150,208)">
-            <path d="M-2,0 C-16,-14 -6,-26 4,-16 C10,-8 4,2 -2,0 Z" fill="none" stroke="#8a5a30" stroke-width="2.6" stroke-linejoin="round"/>
-            <path d="M2,0 C16,14 6,26 -4,16 C-10,8 -4,-2 2,0 Z" fill="none" stroke="#8a5a30" stroke-width="2.6" stroke-linejoin="round"/>
-            <circle cx="0" cy="0" r="3.2" fill="#8a5a30"/>
-            <path d="M-3,2 C-14,18 -20,32 -16,44" fill="none" stroke="#8a5a30" stroke-width="2.4" stroke-linecap="round"/>
-            <path d="M3,2 C12,20 10,34 18,44" fill="none" stroke="#8a5a30" stroke-width="2.4" stroke-linecap="round"/>
+                d="M98 92 C126 52 194 52 222 92 L208 236 C196 248 178 256 160 256 C142 256 124 248 112 236 Z"
+                fill="#f6b1d0" stroke="#2f2a28" stroke-width="2.6" stroke-linejoin="round"/>
+          <path d="M112 114 C128 106 194 106 208 120" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.35"/>
+          <path d="M124 136 C144 128 176 128 196 138" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.26"/>
+          <path d="M120 110 C132 86 188 86 200 110" fill="none" stroke="#2f2a28" stroke-width="1.5" opacity="0.16"/>
+          <g transform="translate(160 212)">
+            <path d="M-8 0 C-24 -14 -10 -30 0 -24 C10 -20 8 -6 -8 0 Z" fill="none" stroke="#8d5e35" stroke-width="2.7" stroke-linejoin="round"/>
+            <path d="M8 0 C24 14 10 30 0 24 C-10 20 -8 6 8 0 Z" fill="none" stroke="#8d5e35" stroke-width="2.7" stroke-linejoin="round"/>
+            <circle cx="0" cy="0" r="3.8" fill="#8d5e35"/>
+            <path d="M-4 2 C-22 18 -24 36 -16 46" fill="none" stroke="#8d5e35" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M4 2 C22 18 24 36 16 46" fill="none" stroke="#8d5e35" stroke-width="2.4" stroke-linecap="round"/>
           </g>
         </svg>
       </div>

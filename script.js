@@ -29,37 +29,43 @@ function petalRing(cx, cy, n, dist, rx, ry, fill, strokeColor, extraRotate){
 
 function buildRose(){
   const cx=70, cy=62;
-  let circles = '';
+  let petals = '';
   const layers = [
-    {r:32, fill:'#E4344F', off:0},
-    {r:25, fill:'#EF5B76', off:8},
-    {r:18, fill:'#E4344F', off:0},
-    {r:11, fill:'#EF5B76', off:5},
+    {r:30, fill:'#E4344F', off:0},
+    {r:24, fill:'#EF5B76', off:7},
+    {r:18, fill:'#F1728E', off:0},
+    {r:11, fill:'#FFD3E0', off:5},
   ];
   layers.forEach((l,i)=>{
-    const a = i*47;
+    const a = i*44;
     const ox = cx + l.off*Math.cos(a*Math.PI/180);
     const oy = cy + l.off*Math.sin(a*Math.PI/180)*0.6;
-    circles += `<circle cx="${ox.toFixed(1)}" cy="${oy.toFixed(1)}" r="${l.r}" fill="${l.fill}" stroke="#8f1030" stroke-width="1" opacity="0.95"/>`;
+    petals += `<circle cx="${ox.toFixed(1)}" cy="${oy.toFixed(1)}" r="${l.r}" fill="${l.fill}" stroke="#8f1030" stroke-width="1" opacity="0.96"/>`;
   });
-  circles += `<circle cx="${cx}" cy="${cy}" r="6" fill="#8f1030"/>`;
-  return `<svg viewBox="0 0 140 170" xmlns="http://www.w3.org/2000/svg">${stemAndLeaf()}${circles}</svg>`;
+  petals += `
+    <path d="M70 36 C84 34 98 42 104 58 C96 50 86 48 74 48 C66 48 58 50 50 58 C56 42 62 36 70 36 Z" fill="#F8A7C0" stroke="#8f1030" stroke-width="1"/>
+    <circle cx="${cx}" cy="${cy}" r="7" fill="#8f1030"/>
+    <path d="M58 72 C48 82 42 100 44 116" fill="none" stroke="#4f7a3d" stroke-width="2" stroke-linecap="round"/>
+  `;
+  return `<svg viewBox="0 0 140 170" xmlns="http://www.w3.org/2000/svg">${stemAndLeaf()}${petals}</svg>`;
 }
 
 function buildTulip(){
   const body = `
-    <path d="M42,80 C36,42 52,18 70,24 C88,18 104,42 98,80
-              C90,64 80,70 70,58 C60,70 50,64 42,80 Z"
+    <path d="M42,82 C34,44 50,16 70,22 C90,16 106,44 98,82
+              C90,66 80,70 70,58 C60,70 50,66 42,82 Z"
           fill="#FF6FA5" stroke="#c93d6e" stroke-width="1.2"/>
-    <path d="M70,58 C60,70 50,64 42,80" fill="none" stroke="#E14E86" stroke-width="1.2" opacity="0.8"/>
-    <path d="M70,58 C80,70 90,64 98,80" fill="none" stroke="#E14E86" stroke-width="1.2" opacity="0.8"/>
+    <path d="M70,58 C60,70 50,66 42,82" fill="none" stroke="#E14E86" stroke-width="1.2" opacity="0.8"/>
+    <path d="M70,58 C80,70 90,66 98,82" fill="none" stroke="#E14E86" stroke-width="1.2" opacity="0.8"/>
+    <path d="M62 87 C58 98 58 116 62 130" fill="none" stroke="#4f7a3d" stroke-width="2" stroke-linecap="round"/>
+    <path d="M78 87 C82 100 82 118 78 130" fill="none" stroke="#4f7a3d" stroke-width="2" stroke-linecap="round"/>
   `;
   return `<svg viewBox="0 0 140 170" xmlns="http://www.w3.org/2000/svg">${stemAndLeaf()}${body}</svg>`;
 }
 
 function buildSunflower(){
   const cx=70, cy=62;
-  let petals = petalRing(cx,cy,12,34,15,7,'#FFC93C','#d99a1a',0);
+  let petals = petalRing(cx,cy,12,34,15,8,'#FFC93C','#d99a1a',0);
   let dots = '';
   for(let i=0;i<10;i++){
     const a = i*36*Math.PI/180;
@@ -73,7 +79,7 @@ function buildSunflower(){
 function buildDaisy(){
   const cx=70, cy=62;
   let petals = petalRing(cx,cy,10,36,17,6,'#FFFDF0','#e0d4a0',0);
-  const center = `<circle cx="${cx}" cy="${cy}" r="14" fill="#FFD93C" stroke="#c9971a" stroke-width="1"/>`;
+  const center = `<circle cx="${cx}" cy="${cy}" r="14" fill="#FFD93C" stroke="#c9971a" stroke-width="1"/><path d="M54 79 C62 88 74 90 86 82" fill="none" stroke="#f2b84f" stroke-width="2" stroke-linecap="round"/>`;
   return `<svg viewBox="0 0 140 170" xmlns="http://www.w3.org/2000/svg">${stemAndLeaf()}${petals}${center}</svg>`;
 }
 
@@ -87,6 +93,7 @@ function buildLavender(){
     const fill = k%2===0? '#8E6FCE':'#6E4FAE';
     dots += `<circle cx="${(cx+ox).toFixed(1)}" cy="${cy.toFixed(1)}" r="${r.toFixed(1)}" fill="${fill}" stroke="#4a2f7a" stroke-width="0.8" opacity="0.95"/>`;
   }
+  dots += `<path d="M70 90 C58 104 56 118 70 132" fill="none" stroke="#4f7a3d" stroke-width="2" stroke-linecap="round"/>`;
   return `<svg viewBox="0 0 140 170" xmlns="http://www.w3.org/2000/svg">${stemAndLeaf()}${dots}</svg>`;
 }
 
@@ -451,50 +458,38 @@ document.getElementById('clearBtn').addEventListener('click', ()=>{
 /* ---------------- save as image ---------------- */
 document.getElementById('saveBtn').addEventListener('click', saveBouquet);
 
-async function saveBouquet(){
+function saveBouquet(){
   deselectAll();
   const rect = stage.getBoundingClientRect();
   const clone = stage.cloneNode(true);
   clone.style.boxShadow = 'none';
+  clone.style.width = `${rect.width}px`;
+  clone.style.height = `${rect.height}px`;
+  clone.removeAttribute('id');
+  clone.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
 
   const styleTags = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'))
-    .map(s=>s.outerHTML).join('');
+    .map(s => s.outerHTML)
+    .join('');
 
   const svgString = `<svg xmlns="http://www.w3.org/2000/svg" width="${rect.width}" height="${rect.height}">
     <foreignObject width="100%" height="100%">
       <div xmlns="http://www.w3.org/1999/xhtml">
         ${styleTags}
-        <div style="width:${rect.width}px;height:${rect.height}px;">${clone.innerHTML}</div>
+        <div style="width:${rect.width}px;height:${rect.height}px;">${clone.outerHTML}</div>
       </div>
     </foreignObject>
   </svg>`;
 
   const blob = new Blob([svgString], {type:'image/svg+xml;charset=utf-8'});
   const url = URL.createObjectURL(blob);
-  const img = new Image();
-
-  img.onload = ()=>{
-    const canvas = document.createElement('canvas');
-    const scale = 2;
-    canvas.width = rect.width*scale;
-    canvas.height = rect.height*scale;
-    const ctx = canvas.getContext('2d');
-    ctx.scale(scale, scale);
-    ctx.fillStyle = '#f6f3ec';
-    ctx.fillRect(0,0,rect.width,rect.height);
-    ctx.drawImage(img, 0, 0, rect.width, rect.height);
-    URL.revokeObjectURL(url);
-    canvas.toBlob((pngBlob)=>{
-      const link = document.createElement('a');
-      link.download = 'my-bouquet.png';
-      link.href = URL.createObjectURL(pngBlob);
-      link.click();
-    });
-  };
-  img.onerror = ()=>{
-    alert("Couldn't save the image in this preview — try downloading the files and running them locally.");
-  };
-  img.src = url;
+  const link = document.createElement('a');
+  link.download = 'my-bouquet.svg';
+  link.href = url;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
 }
 
 checkEmpty();
